@@ -20,18 +20,13 @@ WARNINGS = -Wall
 
 CXXFLAGS = $(WARNINGS) -g
 
-LINKERFLAG =
-
-# Virtual paths
+# Virtual path
 vpath %.cpp src
 vpath %.h include
 
-LINK_TARGET = main.out
+TARGET = main.out
 
-# Library directory
-INCLUDE = include
-
-ALL_CXXFLAGS = -I$(INCLUDE) $(CXXFLAGS)
+INCLUDE = -Iinclude
 
 SRC = main.cpp
 SRC += test.cpp
@@ -39,20 +34,19 @@ SRC += test.cpp
 OBJ := $(SRC:.cpp=.o)
 
 # Defining files that can be cleaned
-REBUILDABLES := $(LINK_TARGET) $(OBJ)
+REBUILDABLES := $(TARGET) $(OBJ)
 
-all : $(LINK_TARGET)
+all : $(TARGET)
 	@echo $(MSG_COMPLETE)
 
-$(LINK_TARGET) : $(OBJ)
+$(TARGET) : $(OBJ)
 	@echo $(MSG_LINKING) $^
 	$(CXX) $(CXXFLAGS) -o $@ $^
-	rm -f $(OBJ)
 
 # Compile: create object files from C source files.
-%.o : %.cpp %.h
+%.o : %.cpp #%.h
 	@echo $(MSG_COMPILING) $<
-	$(CXX) $(ALL_CXXFLAGS) -c $<
+	$(CXX) $(INCLUDE) $(CXXFLAGS) -c $<
 
 clean :
 	@echo $(MSG_CLEANING)
