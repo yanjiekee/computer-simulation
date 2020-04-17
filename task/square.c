@@ -5,7 +5,8 @@ uint16_t square(uint16_t n) {
     if (n == 0)
         return 0;
 
-    uint16_t x = (n << 2);
+    // x = floor(n/2)
+    uint16_t x = (n >> 1);
     if (n & 1)
         return ((square(x) << 2) + (x << 2) + 1);
     else
