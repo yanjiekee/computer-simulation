@@ -1,6 +1,8 @@
 #include <stdint.h>
 // Include the task square() too
 
+void sieveOfEratosthenes(uint16_t upperLimit);
+
 void sieveOfEratosthenes(uint16_t upperLimit) {
     // To have upperLimit as the last index, default boolean is true
     bool numberList[upperLimit + 1];

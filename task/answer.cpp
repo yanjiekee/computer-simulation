@@ -1,12 +1,26 @@
 #include <stdio.h>
 #include <math.h>
 #include <stdint.h>
+#include <fstream>
 
-void sieveOfEratosthenes(uint16_t upperLimit);
+using namespace std;
+
+void sieveOfEratosthenes(uint16_t upperLimit, ofstream &filename);
 int square(uint16_t n);
 
 int main() {
-    sieveOfEratosthenes(1000);
+    ofstream answerFile;
+
+    answerFile.open("answer_square.txt", ofstream::out | ofstream::trunc);
+    for (int i = 0; i < 100; i++) {
+        answerFile << square(i) << endl;
+    }
+    answerFile.close();
+    
+    answerFile.open("answer_primalityTest.txt", ofstream::out | ofstream::trunc);
+    sieveOfEratosthenes(1000, answerFile);
+    answerFile.close();
+
     return 0;
 }
 
@@ -22,7 +36,7 @@ int square(uint16_t n) {
         return ((square(x) << 2));
 }
 
-void sieveOfEratosthenes(uint16_t upperLimit) {
+void sieveOfEratosthenes(uint16_t upperLimit, ofstream &filename) {
     // To have upperLimit as the last index, default boolean is true
     bool numberList[upperLimit + 1];
 
@@ -41,7 +55,7 @@ void sieveOfEratosthenes(uint16_t upperLimit) {
     // Print out the remaining (prime) numbers after eliminating composite numbers
     for (int i = 2; i <= upperLimit; i++) {
         if (numberList[i])
-            printf("%d\n" ,i);
+            filename << i << endl;
     }
     return;
 }

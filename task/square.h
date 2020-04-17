@@ -1,6 +1,8 @@
 #include <stdint.h>
 // uint16_t arr[NUM_ELEMENTS] = {...};
 
+uint16_t square(uint16_t n);
+
 uint16_t square(uint16_t n) {
     if (n == 0)
         return 0;
