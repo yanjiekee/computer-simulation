@@ -2,11 +2,13 @@
 #include <math.h>
 #include <stdint.h>
 #include <fstream>
+#include <iostream>
 
 using namespace std;
 
 void sieveOfEratosthenes(uint16_t upperLimit, ofstream &filename);
 int square(uint16_t n);
+int square_alt(uint16_t);
 
 int main() {
     ofstream answerFile;
@@ -16,10 +18,14 @@ int main() {
         answerFile << square(i) << endl;
     }
     answerFile.close();
-    
+
     answerFile.open("answer_primalityTest.txt", ofstream::out | ofstream::trunc);
     sieveOfEratosthenes(1000, answerFile);
     answerFile.close();
+
+    // for (int i = 0; i < 100; i++) {
+    //     cout << square_alt(i) << endl;
+    // }
 
     return 0;
 }
@@ -58,4 +64,12 @@ void sieveOfEratosthenes(uint16_t upperLimit, ofstream &filename) {
             filename << i << endl;
     }
     return;
+}
+
+int square_alt(uint16_t n) {
+    uint16_t k = 0;
+    for (uint16_t i = 0; i < n; i++) {
+        k += n;
+    }
+    return k;
 }
