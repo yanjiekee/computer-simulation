@@ -1,0 +1,92 @@
+Source: http://reliant.colab.duke.edu/c2mips/
+
+.file	1 ""
+	.section .mdebug.abi32
+	.previous
+	.nan	legacy
+	.module	fp=32
+	.module	nooddspreg
+	.abicalls
+	.text
+	.align	2
+	.globl	square
+	.set	nomips16
+	.set	nomicromips
+	.ent	square
+	.type	square, @function
+square:
+	.frame	$fp,40,$31		# vars= 8, regs= 2/0, args= 16, gp= 8
+	.mask	0xc0000000,-4
+	.fmask	0x00000000,0
+	.set	noreorder
+	.cpload	$25
+	.set	nomacro
+	addiu	$sp,$sp,-40
+	sw	$31,36($sp)
+	sw	$fp,32($sp)
+	move	$fp,$sp
+	.cprestore	16
+	movz	$31,$31,$0
+	sw	$4,40($fp)
+	lw	$2,40($fp)
+	nop
+	bne	$2,$0,$L2
+	nop
+
+	move	$2,$0
+	b	$L3
+	nop
+
+$L2:
+	lw	$2,40($fp)
+	nop
+	sra	$2,$2,1
+	sw	$2,24($fp)
+	lw	$2,40($fp)
+	nop
+	andi	$2,$2,0x1
+	beq	$2,$0,$L4
+	nop
+
+	lw	$4,24($fp)
+	lw	$2,%got(square)($28)
+	nop
+	move	$25,$2
+	.reloc	1f,R_MIPS_JALR,square
+1:	jalr	$25
+	nop
+
+	lw	$28,16($fp)
+	sll	$3,$2,2
+	lw	$2,24($fp)
+	nop
+	sll	$2,$2,2
+	addu	$2,$3,$2
+	addiu	$2,$2,1
+	b	$L3
+	nop
+
+$L4:
+	lw	$4,24($fp)
+	lw	$2,%got(square)($28)
+	nop
+	move	$25,$2
+	.reloc	1f,R_MIPS_JALR,square
+1:	jalr	$25
+	nop
+
+	lw	$28,16($fp)
+	sll	$2,$2,2
+$L3:
+	move	$sp,$fp
+	lw	$31,36($sp)
+	lw	$fp,32($sp)
+	addiu	$sp,$sp,40
+	j	$31
+	nop
+
+	.set	macro
+	.set	reorder
+	.end	square
+	.size	square, .-square
+	.ident	"GCC: (Ubuntu 5.4.0-6ubuntu1~16.04.9) 5.4.0 20160609"
