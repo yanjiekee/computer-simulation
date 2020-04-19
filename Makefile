@@ -29,7 +29,10 @@ TARGET = main.out
 INCLUDE = -Iinclude
 
 SRC = main.cpp
-SRC += test.cpp
+SRC += CPU.cpp
+SRC += Memory.cpp
+SRC += IO.cpp
+SRC += Bus.cpp
 
 OBJ := $(SRC:.cpp=.o)
 
