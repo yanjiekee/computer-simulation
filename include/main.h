@@ -5,3 +5,4 @@
 #include "InstructionDecoder.h"
 #include "InstructionRegister.h"
 #include "ProgramCounter.h"
+#include "GeneralRegister.h"

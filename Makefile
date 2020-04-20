@@ -39,6 +39,7 @@ SRC += ArithmeticLogicUnit.cpp
 SRC += InstructionDecoder.cpp
 SRC += InstructionRegister.cpp
 SRC += ProgramCounter.cpp
+SRC += GeneralRegister.cpp
 
 OBJ := $(SRC:.cpp=.o)
 
