@@ -2,7 +2,7 @@
 # make
 # make clean
 
-.PHONY = all clean
+.PHONY = all clean run
 
 # Compoler to use
 # This is actually a standard variable to indicate that C++ files are compiled
@@ -14,6 +14,7 @@ MSG_LINKING = Linking object file...
 MSG_COMPILING = Compiling source file...
 MSG_CLEANING = Removing all rebuildable files...
 MSG_COMPLETE = All done!!
+MSG_RUNNING = Running...
 
 # Warning options (other options: -Wextra -Werror..)
 WARNINGS = -Wall
@@ -29,10 +30,15 @@ TARGET = main.out
 INCLUDE = -Iinclude
 
 SRC = main.cpp
-SRC += CPU.cpp
+SRC += CentralProcessingUnit.cpp
 SRC += Memory.cpp
-SRC += IO.cpp
+SRC += InputOutput.cpp
 SRC += Bus.cpp
+
+SRC += ArithmeticLogicUnit.cpp
+SRC += InstructionDecoder.cpp
+SRC += InstructionRegister.cpp
+SRC += ProgramCounter.cpp
 
 OBJ := $(SRC:.cpp=.o)
 
@@ -40,17 +46,26 @@ OBJ := $(SRC:.cpp=.o)
 REBUILDABLES := $(TARGET) $(OBJ)
 
 all : $(TARGET)
-	@echo $(MSG_COMPLETE)
+	@echo
+	@echo $(m)
 
 $(TARGET) : $(OBJ)
+	@echo
 	@echo $(MSG_LINKING) $^
 	$(CXX) $(CXXFLAGS) -o $@ $^
 
 # Compile: create object files from C source files.
 %.o : %.cpp #%.h
+	@echo
 	@echo $(MSG_COMPILING) $<
 	$(CXX) $(INCLUDE) $(CXXFLAGS) -c $<
 
 clean :
+	@echo
 	@echo $(MSG_CLEANING)
 	rm -f $(REBUILDABLES)
+
+run :
+	@echo
+	@echo $(MSG_RUNNING)
+	./main.out

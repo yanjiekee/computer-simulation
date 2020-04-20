@@ -1,1 +1,7 @@
-#include "test.h"
+#include "CentralProcessingUnit.h"
+#include "Memory.h"
+#include "InputOutput.h"
+#include "ArithmeticLogicUnit.h"
+#include "InstructionDecoder.h"
+#include "InstructionRegister.h"
+#include "ProgramCounter.h"
