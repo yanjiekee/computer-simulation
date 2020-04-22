@@ -35,11 +35,15 @@ SRC += Memory.cpp
 SRC += InputOutput.cpp
 SRC += Bus.cpp
 
-SRC += ArithmeticLogicUnit.cpp
+SRC += Main_ALU.cpp
 SRC += InstructionDecoder.cpp
 SRC += InstructionRegister.cpp
 SRC += ProgramCounter.cpp
 SRC += GeneralRegister.cpp
+SRC += AddConst_ALU.cpp
+SRC += Add_ALU.cpp
+
+SRC += debug.cpp
 
 OBJ := $(SRC:.cpp=.o)
 

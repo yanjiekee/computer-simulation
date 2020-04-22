@@ -13,7 +13,7 @@ void debugPrintf(char* message, ...) {
 #else
 
 void debugString(char* message) {
-	fprintf(STREAM_FILE, message);
+	fprintf(STREAM_FILE, "%s", message);
     return;
 }
 
