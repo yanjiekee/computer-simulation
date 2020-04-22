@@ -1,14 +1,22 @@
 #include <stdint.h>
 #include <iostream>
 
+#include "debug.h"
+
+#define MEMORY_TEXT_UPPERLIMIT 0x0fffffff
+
+// ToDo: Only make one public function which will read from the bus and decide which private function to run depending on control.
+// One more public function should be debug
 class ProgramCounter {
 public:
     ProgramCounter();
-    ProgramCounter(uint32_t startingAddress);
-    void increment();
-    void jumpTo(uint32_t newAddress);
-    void debug();
-    
+    ProgramCounter(uint32_t *p_bus);
+    void run();
+
 private:
-    uint32_t m_register;
+    uint32_t m_reg;
+    uint32_t *p_connector;
+
+    uint32_t read();
+    void write(uint32_t newAddress);
 };

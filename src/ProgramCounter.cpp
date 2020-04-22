@@ -1,27 +1,34 @@
 #include "ProgramCounter.h"
 
+// Empty constructor: members are not initialised, can be any value
 ProgramCounter::ProgramCounter()
-    :m_register(0)
-{}
+    : p_connector(NULL) {
+    std::cerr << "ERROR: ProgramCounter object floating, no connection made" << std::endl;
+}
 
-ProgramCounter::ProgramCounter(uint32_t startingAddress)
-    :m_register(startingAddress)
-{}
+ProgramCounter::ProgramCounter(uint32_t *p_bus)
+    : p_connector(p_bus) {
+}
 
-void ProgramCounter::increment() {
-    if (m_register == UINT32_MAX)
-        m_register = 0;
+// Comment: Unlike other modules, pc is a clocked
+// It might be redundant in this simulation because
+// it is only necessary when a clock is used
+void ProgramCounter::run() {
+    write(*p_connector);
+    // "Wait for the clock"
+    *p_connector = read();
+    DEBUG_MESSAGE("PC: %d", m_reg);
+
+    return;
+}
+
+uint32_t ProgramCounter::read() {
+    return m_reg;
+}
+
+void ProgramCounter::write(uint32_t newAddress) {
+    if (newAddress > MEMORY_TEXT_UPPERLIMIT)
+        std::cerr << "Error: PC overflow (In data memory)" << std::endl;
     else
-        m_register++;
-    return;
-}
-
-void ProgramCounter::jumpTo(uint32_t newAddress) {
-    m_register = newAddress;
-    return;
-}
-
-void ProgramCounter::debug() {
-    std::cout << m_register << std::endl;
-    return;
+        m_reg = newAddress;
 }
