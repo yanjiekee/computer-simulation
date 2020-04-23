@@ -2,21 +2,21 @@
 
 // Empty constructor: members are not initialised, can be any value
 ProgramCounter::ProgramCounter()
-    : p_connector(NULL) {
+    : m_p_bus(NULL), m_p_controlFlags(NULL) {
     std::cerr << "ERROR: ProgramCounter object floating, no connection made" << std::endl;
 }
 
-ProgramCounter::ProgramCounter(uint32_t *p_bus)
-    : p_connector(p_bus) {
+ProgramCounter::ProgramCounter(uint32_t* p_bus, bool* p_controlFlags)
+    : m_p_bus(p_bus), m_p_controlFlags(p_controlFlags) {
 }
 
 // Comment: Unlike other modules, pc is a clocked
 // It might be redundant in this simulation because
 // it is only necessary when a clock is used
 void ProgramCounter::run() {
-    write(*p_connector);
+    write(*m_p_bus);
     // "Wait for the clock"
-    *p_connector = read();
+    *m_p_bus = read();
     DEBUG_MESSAGE("PC: %d", m_reg);
 
     return;
