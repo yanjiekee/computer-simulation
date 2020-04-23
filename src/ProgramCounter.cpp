@@ -2,12 +2,12 @@
 
 // Empty constructor: members are not initialised, can be any value
 ProgramCounter::ProgramCounter()
-    : m_p_bus(NULL), m_p_controlFlags(NULL) {
+    : m_p_bus(NULL), m_p_g_control(NULL) {
     std::cerr << "ERROR: ProgramCounter object floating, no connection made" << std::endl;
 }
 
-ProgramCounter::ProgramCounter(uint32_t* p_bus, bool* p_controlFlags)
-    : m_p_bus(p_bus), m_p_controlFlags(p_controlFlags) {
+ProgramCounter::ProgramCounter(uint32_t* p_bus, bool* p_g_control)
+    : m_p_bus(p_bus), m_p_g_control(p_g_control) {
 }
 
 // Comment: Unlike other modules, pc is a clocked
