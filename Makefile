@@ -69,6 +69,7 @@ clean :
 	@echo
 	@echo $(MSG_CLEANING)
 	rm -f $(REBUILDABLES)
+	clear
 
 run :
 	@echo
