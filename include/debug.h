@@ -11,5 +11,5 @@
 
 #define DEBUG_MESSAGE(message, ...) do{debugPrintf("%s:%d:%s() ", __FILE__+4, __LINE__, __FUNCTION__); debugPrintf(message, ##__VA_ARGS__); debugString("\n");break;} while (true)
 
-void debugPrintf(char* message, ...);
-void debugString(char* message);
+void debugPrintf(const char* message, ...);
+void debugString(const char* message);

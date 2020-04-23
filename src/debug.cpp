@@ -2,22 +2,22 @@
 
 #ifndef DEBUG_ENABLE
 
-void debugString(char* message) {
+void debugString(const char* message) {
     return;
 }
 
-void debugPrintf(char* message, ...) {
+void debugPrintf(const char* message, ...) {
     return;
 }
 
 #else
 
-void debugString(char* message) {
+void debugString(const char* message) {
 	fprintf(STREAM_FILE, "%s", message);
     return;
 }
 
-void debugPrintf(char* message, ...) {
+void debugPrintf(const char* message, ...) {
 	bool message_has_args = false;
 	for (uint8_t i = 0; true; i++) {
 		if (message[i] == 0)
