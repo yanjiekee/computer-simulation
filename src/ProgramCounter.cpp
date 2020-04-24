@@ -7,7 +7,7 @@ ProgramCounter::ProgramCounter()
 }
 
 ProgramCounter::ProgramCounter(uint32_t* p_bus_in, uint32_t* p_bus_out, bool* p_g_control)
-    : m_p_bus_in(p_bus), m_p_bus_out(p_bus_out), m_p_g_control(p_g_control) {
+    : m_p_bus_in(p_bus_in), m_p_bus_out(p_bus_out), m_p_g_control(p_g_control) {
 }
 
 // Comment: Unlike other modules, pc is a clocked

@@ -5,7 +5,7 @@
 #include "InstructionDecoder.h"
 
 #define BYTE_LENGTH 8                   // Based on the type used in m_register array, e.g. uint8_t
-#define WORD_LENGTH (4 * p_bus_inBENGTH)   // 1 word = 32 bits, size of bus
+#define WORD_LENGTH (4 * BYTE_LENGTH)   // 1 word = 32 bits, size of bus
 #define NO_OF_WORDS (UINT32_MAX + 1)    // INT32_MAX + 1 = 2^32
 #define NO_OF_BYTES (NO_OF_WORDS * BYTE_LENGTH)
 
