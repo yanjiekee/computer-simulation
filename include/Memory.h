@@ -5,7 +5,7 @@
 #include "InstructionDecoder.h"
 
 #define BYTE_LENGTH 8                   // Based on the type used in m_register array, e.g. uint8_t
-#define WORD_LENGTH (4 * BYTE_LENGTH)   // 1 word = 32 bits, size of bus
+#define WORD_LENGTH (4 * p_bus_inBENGTH)   // 1 word = 32 bits, size of bus
 #define NO_OF_WORDS (UINT32_MAX + 1)    // INT32_MAX + 1 = 2^32
 #define NO_OF_BYTES (NO_OF_WORDS * BYTE_LENGTH)
 
@@ -37,13 +37,14 @@ union WordToBytes {
 class Memory {
 public:
     Memory();
-    Memory(uint32_t* p_busA, uint32_t* p_busB, bool* p_g_control);
+    Memory(uint32_t* p_bus_inA, uint32_t* p_busB, uint32_t* p_bus_out, bool* p_g_control);
     void run();
 
 private:
     uint8_t m_reg[NO_OF_BYTES];    // Byte addressed
-    uint32_t* m_p_busA;
-    uint32_t* m_p_busB;
+    uint32_t* m_p_bus_inA;
+    uint32_t* m_p_bus_inB;
+    uint32_t* m_p_bus_out;
     bool* m_p_g_control;
 
     uint32_t read(uint32_t address, int dataLength);

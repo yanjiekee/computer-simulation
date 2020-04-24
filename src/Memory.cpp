@@ -1,12 +1,12 @@
 #include "Memory.h"
 
 Memory::Memory()
-    : m_p_busA(NULL), m_p_busB(NULL), m_p_g_control(NULL) {
+    : m_p_bus_inA(NULL), m_p_bus_inB(NULL), m_p_bus_out(NULL), m_p_g_control(NULL) {
     std::cerr << "ERROR: Memory object floating, no connection made" << std::endl;
 }
 
-Memory::Memory(uint32_t* p_busA, uint32_t* p_busB, bool* p_g_control)
-    : m_p_busA(p_busA), m_p_busB(p_busB), m_p_g_control(p_g_control) {
+Memory::Memory(uint32_t* p_bus_inA, uint32_t* p_bus_inB, uint32_t* p_bus_out, bool* p_g_control)
+    : m_p_bus_inA(p_bus_inA), m_p_bus_inB(p_bus_inB), m_p_bus_out(p_bus_out), m_p_g_control(p_g_control) {
     // No need initialise Heap, Stack or Static
     // Store: Reserved & Text section of memory
 }
@@ -21,10 +21,10 @@ void Memory::run() {
     }
 
     if (m_p_g_control[MEM_WRITE]) {
-        write(*m_p_busB, *m_p_busA, dataLength);
+        write(*m_p_bus_inB, *m_p_bus_inA, dataLength);
     }
     else if (m_p_g_control[MEM_READ]) {
-        *m_p_busA = read(*m_p_busA, dataLength);
+        *m_p_bus_out = read(*m_p_bus_inA, dataLength);
     } else {
         std::cerr << "Memory is not used" << std::endl;
     }

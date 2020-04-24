@@ -8,14 +8,15 @@
 class AddConst_ALU {
 public:
     AddConst_ALU();
-    AddConst_ALU(uint32_t* p_bus, bool* p_g_control);
+    AddConst_ALU(uint32_t* p_bus_in, uint32_t* p_bus_out, bool* p_g_control);
     void run();
 
 private:
     uint32_t m_reg_inputA;
     uint32_t m_reg_inputB;
     uint32_t m_reg_output;
-    uint32_t* m_p_bus;
+    uint32_t* m_p_bus_in;
+    uint32_t* m_p_bus_out;
     bool* m_p_g_control;
 
     uint32_t read();

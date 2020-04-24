@@ -10,12 +10,13 @@
 class ProgramCounter {
 public:
     ProgramCounter();
-    ProgramCounter(uint32_t* p_bus, bool* p_g_control);
+    ProgramCounter(uint32_t* p_bus_in, uint32_t* p_bus_out, bool* p_g_control);
     void run();
 
 private:
     uint32_t m_reg;
-    uint32_t* m_p_bus;
+    uint32_t* m_p_bus_in;
+    uint32_t* m_p_bus_out;
     bool* m_p_g_control;
 
     uint32_t read();

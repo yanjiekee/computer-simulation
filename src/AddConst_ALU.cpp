@@ -1,18 +1,18 @@
 #include "AddConst_ALU.h"
 
 AddConst_ALU::AddConst_ALU()
-    : m_p_bus(NULL), m_p_g_control(NULL) {
+    : m_p_bus_in(NULL), m_p_bus_out(NULL), m_p_g_control(NULL) {
     std::cerr << "ERROR: AddConst_ALU object floating, no connection made" << std::endl;
 }
 
-AddConst_ALU::AddConst_ALU(uint32_t* p_bus, bool* p_g_control)
-    : m_reg_inputB(4), m_p_bus(p_bus), m_p_g_control(p_g_control) {
+AddConst_ALU::AddConst_ALU(uint32_t* p_bus_in, uint32_t* p_bus_out, bool* p_g_control)
+    : m_reg_inputB(4), m_p_bus_in(p_bus_in), m_p_bus_out(p_bus_out), m_p_g_control(p_g_control) {
 }
 
 void AddConst_ALU::run() {
-    write(*m_p_bus);
+    write(*m_p_bus_in);
     add();
-    *m_p_bus = read();
+    *m_p_bus_out = read();
     return;
 }
 
