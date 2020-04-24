@@ -1,5 +1,7 @@
 // Adapted from Steve Gunn's debug.h, which was licensed under the Creative Commons Attribution License
 
+#pragma once
+
 #include <stdio.h>
 #include <iostream>
 #include <string>
