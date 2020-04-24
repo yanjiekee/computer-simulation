@@ -1,11 +1,7 @@
-#include "CentralProcessingUnit.h"
 #include "Memory.h"
-#include "InputOutput.h"
 #include "ALU.h"
 #include "InstructionDecoder.h"
-#include "InstructionRegister.h"
 #include "ProgramCounter.h"
 #include "GeneralRegister.h"
-#include "AddConst_ALU.h"
 
 #include "debug.h"

@@ -30,14 +30,9 @@ TARGET = main.out
 INCLUDE = -Iinclude
 
 SRC = main.cpp
-SRC += CentralProcessingUnit.cpp
 SRC += Memory.cpp
-SRC += InputOutput.cpp
-SRC += Bus.cpp
-
 SRC += ALU.cpp
 SRC += InstructionDecoder.cpp
-SRC += InstructionRegister.cpp
 SRC += ProgramCounter.cpp
 SRC += GeneralRegister.cpp
 
