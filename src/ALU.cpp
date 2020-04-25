@@ -11,7 +11,14 @@ ALU::ALU(uint32_t* p_bus_inA, uint32_t* p_bus_inB, uint32_t* p_bus_out, bool* p_
 
 void ALU::run() {
     m_reg_inputA = *m_p_bus_inA;
-    m_reg_inputB = *m_p_bus_inB;
+    if (m_p_alu_control[ALU_SRC]) {
+        m_reg_inputB = ((*m_p_bus_inB & I_CONST_ADDR) >> I_CONST_ADDR_SHIFT);
+        if (m_reg_inputB >> (16 - 1)) {
+            m_reg_inputB = m_reg_inputB | (~I_CONST_ADDR);
+        }
+    } else {
+        m_reg_inputB = *m_p_bus_inB;
+    }
     DEBUG_MESSAGE("Input A: %x", m_reg_inputA);
     DEBUG_MESSAGE("Input B: %x", m_reg_inputB);
 

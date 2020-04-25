@@ -14,9 +14,9 @@ public:
     bool zero_flag;
 
 private:
-    uint32_t m_reg_inputA;
-    uint32_t m_reg_inputB;
-    uint32_t m_reg_output;
+    int32_t m_reg_inputA;
+    int32_t m_reg_inputB;
+    int32_t m_reg_output;
     uint32_t* m_p_bus_inA;
     uint32_t* m_p_bus_inB;
     uint32_t* m_p_bus_out;

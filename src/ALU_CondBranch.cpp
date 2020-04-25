@@ -1,17 +1,22 @@
-#include "ALU_UncBranch.h"
+#include "ALU_CondBranch.h"
 
-ALU_UncBranch::ALU_UncBranch()
+ALU_CondBranch::ALU_CondBranch()
     : m_p_bus_inA(NULL), m_p_bus_inB(NULL), m_p_bus_out(NULL) {
-    std::cerr << "ERROR: ALU_UncBranch object floating, no connection made" << std::endl;
+    std::cerr << "ERROR: ALU_CondBranch object floating, no connection made" << std::endl;
 }
 
-ALU_UncBranch::ALU_UncBranch(uint32_t* p_bus_inA, uint32_t* p_bus_inB, uint32_t* p_bus_out)
+ALU_CondBranch::ALU_CondBranch(uint32_t* p_bus_inA, uint32_t* p_bus_inB, uint32_t* p_bus_out)
     : m_p_bus_inA(p_bus_inA), m_p_bus_inB(p_bus_inB), m_p_bus_out(p_bus_out) {
 }
 
-void ALU_UncBranch::run() {
+void ALU_CondBranch::run() {
     m_reg_inputA = *m_p_bus_inA;
-    m_reg_inputB = *m_p_bus_inB;
+
+    // Sign Extend:
+    m_reg_inputB = ((*m_p_bus_inB & I_CONST_ADDR) >> I_CONST_ADDR_SHIFT);
+    if (m_reg_inputB >> (16 - 1)) {
+        m_reg_inputB = m_reg_inputB | (~I_CONST_ADDR);
+    }
     DEBUG_MESSAGE("Input A: %x", m_reg_inputA);
     DEBUG_MESSAGE("Input B: %x", m_reg_inputB);
 
@@ -23,7 +28,7 @@ void ALU_UncBranch::run() {
     return;
 }
 
-void ALU_UncBranch::add() {
+void ALU_CondBranch::add() {
     m_reg_output = m_reg_inputA + m_reg_inputB;
     return;
 }

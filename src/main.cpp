@@ -5,34 +5,83 @@ void test_ProgramCounter();
 void test_Memory();
 void test_ALU();
 void test_greg();
+void test_SignExtend();
 
 // Make sure since the whole bus is vulnerable of being modified, only the relevant part is changed when read my a specific module
 // Create 5 stages that run continuously (IF, ID, EX, MEM, WB)
 int main() {
+    test_SignExtend();
     // Buses initialisation:
-    // uint32_t busA, busB, busC, busD, busE, busF, busG, busH, busI, busJ, busK, busL = 0;
-    // uint32_t *p_bus_if, *p_bus_id, *p_bus_exA, *p_bus_exB, *p_bus_mem, *p_bus_wb, *p_bus_pc_inc, *p_bus_cond_brA, *p_bus_const_four, *p_bus_id_extend, *p_bus_id_extend_shift, *p_bus_unc_jump;
-    // p_bus_if = &busA;
-    // p_bus_id = &busB;
-    // p_bus_exA = &busC;
-    // p_bus_exB = &busD;
-    // p_bus_mem = &busE;
-    // p_bus_wb = &busF;
-    // p_bus_pc_inc = &busG;
-    // // ToDo: Try to put p_bus_pc_inc = p_bus_mem once working;
-    // p_bus_cond_br = &busH;
+    uint32_t busA, busB, busC, busD, busE, busF, busG, busH = 0;
+    uint32_t *p_bus_if, *p_bus_id, *p_bus_exA, *p_bus_exB, *p_bus_mem, *p_bus_wb, *p_bus_pc_inc, *p_bus_cond_br;
+    p_bus_if = &busA;
+    p_bus_id = &busB;
+    p_bus_exA = &busC;
+    p_bus_exB = &busD;
+    p_bus_mem = &busE;
+    p_bus_wb = &busF;
+    p_bus_pc_inc = &busG;
+    // ToDo: Try to put p_bus_pc_inc = p_bus_mem once working;
+    p_bus_cond_br = &busH;
 
     // Control flags:
     bool p_g_control[CONTROL_FLAGS_TOTAL];
     bool p_alu_control[ALU_CONTROL_FLAGS_TOTAL];
 
     // Computer modules:
-    // ProgramCounter pc(p_bus_pc_inc, p_bus_if, p_g_control);
-    // ALU pc_inc_adder(p_bus_const_four, p_bus_if, p_bus_pc_inc, p_g_control, p_alu_control);
-    // Memory mem(p_bus_mem, p_bus_ex, p_bus_wb, p_bus_id);
-    // InstructionDecoder decoder(p_bus_id, p_g_control, p_alu_control);
-    // GeneralRegister g_reg(p_bus_id, p_bus_mem, p_bus_exA, p_bus_exB, p_bus_pc_inc, p_g_control);
-    // ALU cond_addr_adder()
+    ProgramCounter pc(p_bus_pc_inc, p_bus_if);
+    ALU_IncPC inc_pc_adder(p_bus_if, p_bus_pc_inc);
+    Memory mem(p_bus_mem, p_bus_exB, p_bus_wb, p_bus_id, p_g_control);
+    InstructionDecoder decoder(p_bus_id, p_g_control, p_alu_control);
+    GeneralRegister g_reg(p_bus_id, p_bus_mem, p_bus_exA, p_bus_exB, p_bus_pc_inc, p_g_control);
+    ALU_CondBranch cond_br_adder(p_bus_pc_inc, p_bus_id, p_bus_cond_br);
+    ALU main_alu(p_bus_exA, p_bus_exB, p_bus_mem, p_g_control, p_alu_control);
+
+    while(1) {
+        pc.run();
+        pc.change_p_bus_in(p_bus_pc_inc);
+
+        // Stage 1: IF
+        p_g_control[PC_READ] = true;
+        mem.change_p_bus_in(p_bus_if);
+        mem.run();
+        p_g_control[PC_READ] = false;
+        mem.change_p_bus_in(p_bus_mem);
+        inc_pc_adder.run();
+
+        // Stage 2: ID
+        decoder.run();
+        g_reg.run();
+
+        // Stage 3: EX
+        if (p_g_control[ALU_SRC]) {
+            main_alu.change_p_bus_inB(p_bus_id);
+        }
+        main_alu.run();
+        main_alu.change_p_bus_inB(p_bus_exB);   // Default ALU source
+
+        // Stage 4: MEM
+        mem.run();
+        cond_br_adder.run();
+
+        // Stage 5: WB
+        if (p_g_control[MEM_TO_REG]) {
+            g_reg.change_p_bus_inB(p_bus_wb);
+        }
+        g_reg.run();
+        g_reg.change_p_bus_inB(p_bus_mem);  // Default g.register Write Data connection
+
+        // Mux for PC
+        if (p_g_control[JUMP_REG]) {
+            pc.change_p_bus_in(p_bus_mem);
+        }
+        else if (p_g_control[JUMP_UNC]) {
+            pc.change_p_bus_in(p_bus_id);
+        }
+        else if (p_g_control[BRANCH]) {
+            pc.change_p_bus_in(p_bus_mem);
+        } else {}
+    }
 
     return 0;
 }
@@ -159,4 +208,14 @@ void test_greg() {
     p_g_control[JUMP_LINK] = true;
     greg.run();
     return;
+}
+
+void test_SignExtend() {
+    uint32_t m_p_bus_inB = 0x1234D678;
+    int32_t m_reg_inputB = ((m_p_bus_inB & I_CONST_ADDR) >> I_CONST_ADDR_SHIFT);
+    if (m_reg_inputB >> (16 - 1)) {
+        m_reg_inputB = m_reg_inputB | (~I_CONST_ADDR);
+    }
+    DEBUG_MESSAGE("Before: %x", m_p_bus_inB);
+    DEBUG_MESSAGE("After: %x", m_reg_inputB);
 }

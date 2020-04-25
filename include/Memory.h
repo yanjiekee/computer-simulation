@@ -39,7 +39,7 @@ union WordToBytes {
 class Memory {
 public:
     Memory();
-    Memory(uint32_t* p_bus_inA, uint32_t* p_busB, uint32_t* p_bus_outA, uint32_t* p_bus_outB, bool* p_g_control);
+    Memory(uint32_t* p_bus_inA, uint32_t* p_bus_inB, uint32_t* p_bus_outA, uint32_t* p_bus_outB, bool* p_g_control);
     void run();
     void change_p_bus_in(uint32_t* p_bus_inA);
 

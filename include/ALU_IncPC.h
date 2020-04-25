@@ -11,9 +11,9 @@ public:
     void run();
 
 private:
-    uint32_t m_reg_inputA;
-    uint32_t m_reg_inputB;
-    uint32_t m_reg_output;
+    int32_t m_reg_inputA;
+    int32_t m_reg_inputB;
+    int32_t m_reg_output;
     uint32_t* m_p_bus_in;
     uint32_t* m_p_bus_out;
 
