@@ -5,13 +5,12 @@
 
 #define MEMORY_TEXT_UPPERLIMIT 0x0fffffff
 
-// ToDo: Only make one public function which will read from the bus and decide which private function to run depending on control.
-// One more public function should be debug
 class ProgramCounter {
 public:
     ProgramCounter();
     ProgramCounter(uint32_t* p_bus_in, uint32_t* p_bus_out, bool* p_g_control);
     void run();
+    void change_p_bus_in(uint32_t* p_bus_in);
 
 private:
     uint32_t m_reg;

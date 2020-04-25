@@ -9,7 +9,7 @@ void test_greg();
 // Make sure since the whole bus is vulnerable of being modified, only the relevant part is changed when read my a specific module
 // Create 5 stages that run continuously (IF, ID, EX, MEM, WB)
 int main() {
-    // test_greg();
+    
     return 0;
 }
 

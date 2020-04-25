@@ -4,13 +4,12 @@
 #include "debug.h"
 #include "InstructionDecoder.h"
 
-// Adding input with constant 4 (length of a word in bytes)
-// m_reg_inputB is initialised in constructor
 class ALU {
 public:
     ALU();
     ALU(uint32_t* p_bus_inA, uint32_t* p_bus_inB, uint32_t* p_bus_out, bool* p_g_control, bool* p_alu_control);
     void run();
+    void change_p_bus_inB(uint32_t* p_bus_inB);
 
     bool zero_flag;
 

@@ -35,6 +35,10 @@ void ALU::run() {
     return;
 }
 
+void ALU::change_p_bus_inB(uint32_t* p_bus_inB) {
+    m_p_bus_inB = p_bus_inB;
+    return;
+}
 
 void ALU::add() {
     m_reg_output = m_reg_inputA + m_reg_inputB;

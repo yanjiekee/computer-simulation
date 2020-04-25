@@ -4,6 +4,7 @@
 #include "debug.h"
 #include "InstructionDecoder.h"
 
+// Definition not very useful
 #define GREG_ZERO   0
 #define GREG_AT     1
 #define GREG_V0     2

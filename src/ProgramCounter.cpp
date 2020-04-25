@@ -22,6 +22,11 @@ void ProgramCounter::run() {
     return;
 }
 
+void ProgramCounter::change_p_bus_in(uint32_t* p_bus_in) {
+    m_p_bus_in = p_bus_in;
+    return;
+}
+
 uint32_t ProgramCounter::read() {
     return m_reg;
 }
