@@ -1,12 +1,12 @@
 #include "Memory.h"
 
 Memory::Memory()
-    : m_p_bus_inA(NULL), m_p_bus_inB(NULL), m_p_bus_out(NULL), m_p_g_control(NULL) {
+    : m_p_bus_inA(NULL), m_p_bus_inB(NULL), m_p_bus_outA(NULL), m_p_bus_outB(NULL), m_p_g_control(NULL) {
     std::cerr << "ERROR: Memory object floating, no connection made" << std::endl;
 }
 
-Memory::Memory(uint32_t* p_bus_inA, uint32_t* p_bus_inB, uint32_t* p_bus_out, bool* p_g_control)
-    : m_p_bus_inA(p_bus_inA), m_p_bus_inB(p_bus_inB), m_p_bus_out(p_bus_out), m_p_g_control(p_g_control) {
+Memory::Memory(uint32_t* p_bus_inA, uint32_t* p_bus_inB, uint32_t* p_bus_outA, uint32_t* p_bus_outB, bool* p_g_control)
+    : m_p_bus_inA(p_bus_inA), m_p_bus_inB(p_bus_inB), m_p_bus_outA(p_bus_outA), m_p_bus_outB(p_bus_outB), m_p_g_control(p_g_control) {
     // No need initialise Heap, Stack or Static
     // Store: Reserved & Text section of memory
 }
@@ -24,11 +24,19 @@ void Memory::run() {
         write(*m_p_bus_inB, *m_p_bus_inA, dataLength);
     }
     else if (m_p_g_control[MEM_READ]) {
-        *m_p_bus_out = read(*m_p_bus_inA, dataLength);
+        *m_p_bus_outA = read(*m_p_bus_inA, dataLength);
+    }
+    else if (m_p_g_control[PC_READ]){
+        *m_p_bus_outB = read(*m_p_bus_inA, dataLength);
     } else {
         std::cerr << "Memory is not used" << std::endl;
     }
     // Question: Why do we need MEM_READ when we have MEM_WRITE?
+}
+
+void Memory::change_p_bus_in(uint32_t* p_bus_inA) {
+    m_p_bus_inA = p_bus_inA;
+    return;
 }
 
 uint32_t Memory::read(uint32_t address, int dataLength) {

@@ -9,7 +9,18 @@ void test_greg();
 // Make sure since the whole bus is vulnerable of being modified, only the relevant part is changed when read my a specific module
 // Create 5 stages that run continuously (IF, ID, EX, MEM, WB)
 int main() {
-    
+    // Buses initialisation:
+    uint32_t *p_bus_if;
+    uint32_t *p_bus_id;
+    uint32_t *p_bus_ex;
+    uint32_t *p_bus_mem;
+    uint32_t *p_bus_wb;
+    uint32_t *p_bus_pc_inc;
+    uint32_t *p_bus_cond_br;
+
+
+
+
     return 0;
 }
 
@@ -50,7 +61,7 @@ void test_Memory() {
     printf("value= %x\n", *p_busA);
     printf("value= %x\n", *p_busB);
 
-    Memory ram(p_busA, p_busB, p_busC, p_g_control);
+    Memory ram(p_busA, p_busB, p_busC, p_busC, p_g_control);
     // Notes: Read and write function now moved to private after testing
     // ram.write(0x12345678, 0, WORD_LENGTH);
     // uint32_t a = ram.read(0, WORD_LENGTH);
