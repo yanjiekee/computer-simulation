@@ -4,11 +4,12 @@
 void test_ProgramCounter();
 void test_Memory();
 void test_ALU();
+void test_greg();
 
 // Make sure since the whole bus is vulnerable of being modified, only the relevant part is changed when read my a specific module
 // Create 5 stages that run continuously (IF, ID, EX, MEM, WB)
 int main() {
-    // test_Memory();
+    // test_greg();
     return 0;
 }
 
@@ -90,5 +91,49 @@ void test_ALU() {
     p_alu_control[ALU_SUB] = true;
     alu.run();
 
+    return;
+}
+
+void test_greg() {
+    uint32_t *p_busA;
+    uint32_t *p_busB;
+    uint32_t *p_busB2;
+    uint32_t *p_busC;
+    uint32_t *p_busD;
+    uint32_t *p_busJAL;
+    uint32_t busA = 0b00000000101010001011100000000000;
+    uint32_t busB = 0x12345678;
+    uint32_t busB2 = 0x87654321;
+    uint32_t busC = 0x01010101;
+    uint32_t busD = 0x10101010;
+    uint32_t busJAL = 0x40000600;
+    p_busA = &busA;
+    p_busB = &busB;
+    p_busB2 = &busB2;
+    p_busC = &busC;
+    p_busD = &busD;
+    p_busJAL = &busJAL;
+    bool p_g_control[CONTROL_FLAGS_TOTAL];
+    // bool p_alu_control[ALU_CONTROL_FLAGS_TOTAL];
+
+    GeneralRegister greg(p_busA, p_busB, p_busC, p_busD, p_busJAL, p_g_control);
+    // Default:
+    p_g_control[REG_DST] = false;
+    p_g_control[REG_WRITE] = false;
+    p_g_control[JUMP_LINK] = false;
+    greg.run();
+    DEBUG_MESSAGE("-------------------------");
+    p_g_control[REG_DST] = true;
+    greg.run();
+    DEBUG_MESSAGE("-------------------------");
+    p_g_control[REG_WRITE] = true;
+    greg.run();
+    DEBUG_MESSAGE("-------------------------");
+    greg.change_p_bus_inB(p_busB2);
+    greg.run();
+    DEBUG_MESSAGE("-------------------------");
+    p_g_control[REG_WRITE] = false;
+    p_g_control[JUMP_LINK] = true;
+    greg.run();
     return;
 }
