@@ -10,16 +10,29 @@ void test_greg();
 // Create 5 stages that run continuously (IF, ID, EX, MEM, WB)
 int main() {
     // Buses initialisation:
-    uint32_t *p_bus_if;
-    uint32_t *p_bus_id;
-    uint32_t *p_bus_ex;
-    uint32_t *p_bus_mem;
-    uint32_t *p_bus_wb;
-    uint32_t *p_bus_pc_inc;
-    uint32_t *p_bus_cond_br;
+    // uint32_t busA, busB, busC, busD, busE, busF, busG, busH, busI, busJ, busK, busL = 0;
+    // uint32_t *p_bus_if, *p_bus_id, *p_bus_exA, *p_bus_exB, *p_bus_mem, *p_bus_wb, *p_bus_pc_inc, *p_bus_cond_brA, *p_bus_const_four, *p_bus_id_extend, *p_bus_id_extend_shift, *p_bus_unc_jump;
+    // p_bus_if = &busA;
+    // p_bus_id = &busB;
+    // p_bus_exA = &busC;
+    // p_bus_exB = &busD;
+    // p_bus_mem = &busE;
+    // p_bus_wb = &busF;
+    // p_bus_pc_inc = &busG;
+    // // ToDo: Try to put p_bus_pc_inc = p_bus_mem once working;
+    // p_bus_cond_br = &busH;
 
+    // Control flags:
+    bool p_g_control[CONTROL_FLAGS_TOTAL];
+    bool p_alu_control[ALU_CONTROL_FLAGS_TOTAL];
 
-
+    // Computer modules:
+    // ProgramCounter pc(p_bus_pc_inc, p_bus_if, p_g_control);
+    // ALU pc_inc_adder(p_bus_const_four, p_bus_if, p_bus_pc_inc, p_g_control, p_alu_control);
+    // Memory mem(p_bus_mem, p_bus_ex, p_bus_wb, p_bus_id);
+    // InstructionDecoder decoder(p_bus_id, p_g_control, p_alu_control);
+    // GeneralRegister g_reg(p_bus_id, p_bus_mem, p_bus_exA, p_bus_exB, p_bus_pc_inc, p_g_control);
+    // ALU cond_addr_adder()
 
     return 0;
 }
@@ -32,11 +45,10 @@ void test_ProgramCounter() {
     uint32_t busB = 4;
     p_busB = &busB;
 
-
     bool p_g_control[CONTROL_FLAGS_TOTAL];
     bool p_alu_control[ALU_CONTROL_FLAGS_TOTAL];
 
-    ProgramCounter pc(p_bus, p_bus, p_g_control);
+    ProgramCounter pc(p_bus, p_bus);
     ALU adder(p_bus, p_busB, p_bus, p_g_control, p_alu_control);
     pc.run();
     adder.run();

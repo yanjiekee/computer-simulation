@@ -1,13 +1,14 @@
 #include "ProgramCounter.h"
 
 ProgramCounter::ProgramCounter()
-    : m_p_bus_in(NULL), m_p_bus_out(NULL), m_p_g_control(NULL) {
+    : m_p_bus_in(NULL), m_p_bus_out(NULL) {
     std::cerr << "ERROR: ProgramCounter object floating, no connection made" << std::endl;
 }
 
-ProgramCounter::ProgramCounter(uint32_t* p_bus_in, uint32_t* p_bus_out, bool* p_g_control)
-    : m_p_bus_in(p_bus_in), m_p_bus_out(p_bus_out), m_p_g_control(p_g_control) {
+ProgramCounter::ProgramCounter(uint32_t* p_bus_in, uint32_t* p_bus_out)
+    : m_p_bus_in(p_bus_in), m_p_bus_out(p_bus_out) {
     // Initialise the starting of text address
+    *m_p_bus_in = MEMORY_TEXT_LOWERLIMIT;
 }
 
 // Comment: Unlike other modules, pc is a clocked
