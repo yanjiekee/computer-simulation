@@ -19,7 +19,7 @@ void ProgramCounter::run() {
     // "Wait for the clock"
     *m_p_bus_out = read();
     DEBUG_MESSAGE("PC: %d", ((m_reg - MEMORY_TEXT_LOWERLIMIT) / 4) + 1);
-    // printf("PC: %d", ((m_reg - MEMORY_TEXT_LOWERLIMIT) / 4) + 1);
+    // printf("PC: %d\n", ((m_reg - MEMORY_TEXT_LOWERLIMIT) / 4) + 1);
     return;
 }
 

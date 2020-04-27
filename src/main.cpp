@@ -35,13 +35,13 @@ int main() {
     ProgramCounter pc(p_bus_pc_inc, p_bus_if, p_g_control);
     ALU_IncPC inc_pc_adder(p_bus_if, p_bus_pc_inc);
     Memory mem(p_bus_mem, p_bus_exB, p_bus_wb, p_bus_id, p_g_control);
-    mem.programUpload(text_file, "mars/square.txt");
+    mem.programUpload(text_file, "mars/main.txt");
     InstructionDecoder decoder(p_bus_id, p_g_control, p_alu_control);
     GeneralRegister g_reg(p_bus_id, p_bus_mem, p_bus_exA, p_bus_exB, p_bus_pc_inc, p_g_control);
     ALU_CondBranch cond_br_adder(p_bus_pc_inc, p_bus_id, p_bus_cond_br);
     ALU main_alu(p_bus_exA, p_bus_exB, p_bus_mem, p_g_control, p_alu_control);
 
-    for (int i = 0; i < 10000000; i++) {
+    for (;;) {
         // printf("\n");
         pc.run();
         pc.change_p_bus_in(p_bus_pc_inc);

@@ -10,7 +10,7 @@ GeneralRegister::GeneralRegister(uint32_t* p_bus_inA, uint32_t* p_bus_inB, uint3
     m_reg[GREG_ZERO] = 0;
     m_reg[GREG_SP] = MEMORY_STACK_UPPERLIMIT;
     m_reg[GREG_FP] = MEMORY_STACK_UPPERLIMIT;
-    m_reg[GREG_MP] = MEMORY_RESERVED_LOWERLIMIT;
+    m_reg[GREG_MP] = MEMORY_LOG_LOWERLIMIT;
 }
 
 void GeneralRegister::run() {
@@ -37,6 +37,8 @@ void GeneralRegister::run() {
     else if(m_p_g_control[REG_WRITE]) {
         if (m_write_reg == GREG_ZERO) {
             std::cerr << "ERROR: Attempt to rewrite $zero" << std::endl;
+            // printf("Bus A: x'%x\n", *m_p_bus_inA);
+            // printf("$ra = x'%x\n", m_reg[GREG_RA]);
         }
         m_reg[m_write_reg] = m_write_data;
         DEBUG_MESSAGE("Written Data: %x, Addr: %d", m_reg[m_write_reg], m_write_reg);

@@ -48,7 +48,7 @@ L1:
 	slt $t2 $t0 $t1
 	beq $t2 $zero exitL1
 	sub $t2 $fp $t0
-	add $t3 $zero 1
+	addi $t3 $zero 1
 	sb $t3 0($t2)
 	addi $t0 $t0 1
 	j L1

@@ -23,7 +23,7 @@ void debugTerminate() {
 FILE* g_p_logfile;
 
 void debugInit() {
-    g_p_logfile = fopen("log/squareloop", "w");
+    g_p_logfile = fopen("log/main", "w");
 }
 
 void debugString(const char* message) {

@@ -82,7 +82,7 @@ void Memory::write(uint32_t data, uint32_t address, int dataLength) {
             std::cerr << "ERROR: Address not within the range of memory" << std::endl;
             return;
         }
-        if (address < MEMORY_RESERVED_UPPERLIMIT - 2) {
+        if (address < MEMORY_LOG_UPPERLIMIT - 2 && address > MEMORY_LOG_LOWERLIMIT - 1) {
             printf("LOG: Data: d'%d, addr: x'%x\n", data, address);
             DEBUG_MESSAGE("LOG: Data: d'%d, addr: x'%x\n", data, address);
         }
