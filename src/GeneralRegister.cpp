@@ -8,6 +8,9 @@ GeneralRegister::GeneralRegister()
 GeneralRegister::GeneralRegister(uint32_t* p_bus_inA, uint32_t* p_bus_inB, uint32_t* p_bus_outA, uint32_t* p_bus_outB, uint32_t* p_bus_jal, bool* p_g_control)
     : m_p_bus_inA(p_bus_inA), m_p_bus_inB(p_bus_inB), m_p_bus_outA(p_bus_outA), m_p_bus_outB(p_bus_outB), m_p_bus_jal(p_bus_jal), m_p_g_control(p_g_control) {
     m_reg[GREG_ZERO] = 0;
+    m_reg[GREG_SP] = MEMORY_STACK_UPPERLIMIT;
+    m_reg[GREG_FP] = MEMORY_STACK_UPPERLIMIT;
+    m_reg[GREG_MP] = MEMORY_RESERVED_LOWERLIMIT;
 }
 
 void GeneralRegister::run() {
@@ -39,7 +42,9 @@ void GeneralRegister::run() {
         DEBUG_MESSAGE("Written Data: %x, Addr: %d", m_reg[m_write_reg], m_write_reg);
     }
     *m_p_bus_outA = m_read_dataA;
+    DEBUG_MESSAGE("Read Data 1: %d", m_read_dataA);
     *m_p_bus_outB = m_read_dataB;
+    DEBUG_MESSAGE("Read Data 2: %d", m_read_dataB);
 }
 
 void GeneralRegister::change_p_bus_inB(uint32_t* p_bus_inB) {

@@ -12,13 +12,13 @@ ALU_IncPC::ALU_IncPC(uint32_t* p_bus_in, uint32_t* p_bus_out)
 
 void ALU_IncPC::run() {
     m_reg_inputA = *m_p_bus_in;
-    DEBUG_MESSAGE("Input: %x", m_reg_inputA);
+    // DEBUG_MESSAGE("Input: %x", m_reg_inputA);
 
     add();
-    DEBUG_MESSAGE("Operation (Default): Addition");
+    // DEBUG_MESSAGE("Operation (Default): Addition");
 
     *m_p_bus_out = m_reg_output;
-    DEBUG_MESSAGE("Output: %x", m_reg_output);
+    // DEBUG_MESSAGE("Output: %x", m_reg_output);
     return;
 }
 

@@ -3,6 +3,7 @@
 
 #include "debug.h"
 #include "InstructionDecoder.h"
+#include "Memory.h"
 
 // Definition not very useful
 #define GREG_ZERO   0
@@ -32,7 +33,7 @@
 #define GREG_T8     24
 #define GREG_T9     25
 #define GREG_K0     26
-#define GREG_K1     27
+#define GREG_MP     27  // Memory pointer: Points at the bottom of memory to store the results of two tasks
 #define GREG_GP     28
 #define GREG_SP     29
 #define GREG_FP     30

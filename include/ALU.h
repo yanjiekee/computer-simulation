@@ -3,6 +3,7 @@
 
 #include "debug.h"
 #include "InstructionDecoder.h"
+#include "Memory.h"
 
 class ALU {
 public:

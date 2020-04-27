@@ -10,7 +10,7 @@ void test_SignExtend();
 // Make sure since the whole bus is vulnerable of being modified, only the relevant part is changed when read my a specific module
 // Create 5 stages that run continuously (IF, ID, EX, MEM, WB)
 int main() {
-    test_SignExtend();
+    debugInit();
     // Buses initialisation:
     uint32_t busA, busB, busC, busD, busE, busF, busG, busH = 0;
     uint32_t *p_bus_if, *p_bus_id, *p_bus_exA, *p_bus_exB, *p_bus_mem, *p_bus_wb, *p_bus_pc_inc, *p_bus_cond_br;
@@ -28,16 +28,21 @@ int main() {
     bool p_g_control[CONTROL_FLAGS_TOTAL];
     bool p_alu_control[ALU_CONTROL_FLAGS_TOTAL];
 
+    // Program (text) memory file:
+    std::fstream text_file;
+
     // Computer modules:
-    ProgramCounter pc(p_bus_pc_inc, p_bus_if);
+    ProgramCounter pc(p_bus_pc_inc, p_bus_if, p_g_control);
     ALU_IncPC inc_pc_adder(p_bus_if, p_bus_pc_inc);
     Memory mem(p_bus_mem, p_bus_exB, p_bus_wb, p_bus_id, p_g_control);
+    mem.programUpload(text_file, "mars/square.txt");
     InstructionDecoder decoder(p_bus_id, p_g_control, p_alu_control);
     GeneralRegister g_reg(p_bus_id, p_bus_mem, p_bus_exA, p_bus_exB, p_bus_pc_inc, p_g_control);
     ALU_CondBranch cond_br_adder(p_bus_pc_inc, p_bus_id, p_bus_cond_br);
     ALU main_alu(p_bus_exA, p_bus_exB, p_bus_mem, p_g_control, p_alu_control);
 
-    while(1) {
+    for (int i = 0; i < 10000000; i++) {
+        // printf("\n");
         pc.run();
         pc.change_p_bus_in(p_bus_pc_inc);
 
@@ -50,7 +55,11 @@ int main() {
         inc_pc_adder.run();
 
         // Stage 2: ID
-        decoder.run();
+        if (decoder.run()) {
+            std::cout << "TERMINATE: Sequence Ended" << std::endl;
+            debugTerminate();
+            return 0;
+        }
         g_reg.run();
 
         // Stage 3: EX
@@ -73,16 +82,20 @@ int main() {
 
         // Mux for PC
         if (p_g_control[JUMP_REG]) {
+            DEBUG_MESSAGE("Here");
             pc.change_p_bus_in(p_bus_mem);
         }
         else if (p_g_control[JUMP_UNC]) {
+            DEBUG_MESSAGE("Here");
             pc.change_p_bus_in(p_bus_id);
         }
-        else if (p_g_control[BRANCH]) {
-            pc.change_p_bus_in(p_bus_mem);
+        else if (p_g_control[BRANCH] && main_alu.zero_flag) {
+            DEBUG_MESSAGE("Here");
+            pc.change_p_bus_in(p_bus_cond_br);
         } else {}
     }
 
+    debugTerminate();
     return 0;
 }
 
@@ -97,7 +110,7 @@ void test_ProgramCounter() {
     bool p_g_control[CONTROL_FLAGS_TOTAL];
     bool p_alu_control[ALU_CONTROL_FLAGS_TOTAL];
 
-    ProgramCounter pc(p_bus, p_bus);
+    ProgramCounter pc(p_bus, p_bus, p_g_control);
     ALU adder(p_bus, p_busB, p_bus, p_g_control, p_alu_control);
     pc.run();
     adder.run();
@@ -118,11 +131,14 @@ void test_Memory() {
     p_busC = &busC;
     bool p_g_control[CONTROL_FLAGS_TOTAL];
     // bool p_alu_control[ALU_CONTROL_FLAGS_TOTAL];
+    std::fstream text_file;
+
 
     printf("value= %x\n", *p_busA);
     printf("value= %x\n", *p_busB);
 
     Memory ram(p_busA, p_busB, p_busC, p_busC, p_g_control);
+    ram.programUpload(text_file, "mars/test.txt");
     // Notes: Read and write function now moved to private after testing
     // ram.write(0x12345678, 0, WORD_LENGTH);
     // uint32_t a = ram.read(0, WORD_LENGTH);

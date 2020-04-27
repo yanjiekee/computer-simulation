@@ -43,6 +43,8 @@
 
 #define R_TYPE  0b000000
 
+#define TERMINATE   0b111111
+
 // R-Instruction Functions:
 #define F_ADD   0b100000
 #define F_SUB   0b100010
@@ -70,8 +72,9 @@
 // ALU's Control Flags:
 #define ALU_ADD 0
 #define ALU_SUB 1
+#define ALU_SLT 2
 
-#define ALU_CONTROL_FLAGS_TOTAL 2   // To define alu flag array size
+#define ALU_CONTROL_FLAGS_TOTAL 3   // To define alu flag array size
 
 
 // Control's case statements: translating op-code to flags
@@ -80,7 +83,7 @@ class InstructionDecoder {
 public:
     InstructionDecoder();
     InstructionDecoder(uint32_t* p_bus, bool* p_g_control, bool* p_alu_control);
-    void run();
+    int run();
 
 private:
     uint32_t m_reg;

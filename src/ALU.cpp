@@ -11,16 +11,17 @@ ALU::ALU(uint32_t* p_bus_inA, uint32_t* p_bus_inB, uint32_t* p_bus_out, bool* p_
 
 void ALU::run() {
     m_reg_inputA = *m_p_bus_inA;
-    if (m_p_alu_control[ALU_SRC]) {
+    if (m_p_g_control[ALU_SRC]) {
         m_reg_inputB = ((*m_p_bus_inB & I_CONST_ADDR) >> I_CONST_ADDR_SHIFT);
         if (m_reg_inputB >> (16 - 1)) {
             m_reg_inputB = m_reg_inputB | (~I_CONST_ADDR);
         }
+        DEBUG_MESSAGE("Input B Bus's Value: %x", m_reg_inputB);
     } else {
         m_reg_inputB = *m_p_bus_inB;
     }
-    DEBUG_MESSAGE("Input A: %x", m_reg_inputA);
-    DEBUG_MESSAGE("Input B: %x", m_reg_inputB);
+    DEBUG_MESSAGE("Input A: %d", m_reg_inputA);
+    DEBUG_MESSAGE("Input B: %d", m_reg_inputB);
 
     if(m_p_g_control[ALU_OP]) {
         if(m_p_alu_control[ALU_ADD]) {
@@ -31,14 +32,22 @@ void ALU::run() {
             sub();
             DEBUG_MESSAGE("Operation: Subtraction");
         }
+        else if(m_p_alu_control[ALU_SLT]) {
+            sub();
+            if (m_reg_output < 0)
+                m_reg_output = 1;
+            else m_reg_output = 0;
+
+            DEBUG_MESSAGE("Operation: SLT (Sub)");
+        }
     } else {
         // Default operation:
         add();
         DEBUG_MESSAGE("Operation (Default): Addition");
     }
-    zero_flag = m_reg_output;
+    zero_flag = !m_reg_output;
     *m_p_bus_out = m_reg_output;
-    DEBUG_MESSAGE("Output: %x", m_reg_output);
+    DEBUG_MESSAGE("Output: %d", m_reg_output);
     return;
 }
 

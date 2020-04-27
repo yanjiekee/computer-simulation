@@ -2,6 +2,10 @@
 
 #ifndef DEBUG_ENABLE
 
+void debugInit() {
+    return;
+}
+
 void debugString(const char* message) {
     return;
 }
@@ -10,10 +14,20 @@ void debugPrintf(const char* message, ...) {
     return;
 }
 
+void debugTerminate() {
+    return;
+}
+
 #else
 
+FILE* g_p_logfile;
+
+void debugInit() {
+    g_p_logfile = fopen("log/squareloop", "w");
+}
+
 void debugString(const char* message) {
-	fprintf(STREAM_FILE, "%s", message);
+	fprintf(g_p_logfile, "%s", message);
     return;
 }
 
@@ -38,6 +52,10 @@ void debugPrintf(const char* message, ...) {
 		debugString(message);
 	}
     return;
+}
+
+void debugTerminate() {
+    fclose (g_p_logfile);
 }
 
 #endif
