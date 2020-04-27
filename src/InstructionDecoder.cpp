@@ -21,10 +21,10 @@ int InstructionDecoder::run() {
     // write(*m_p_bus);
     m_reg = *m_p_bus;
     uint32_t opcode = m_reg & OPCODE;
-    // DEBUG_MESSAGE("Received bus: %d", m_reg);
-    // DEBUG_MESSAGE("Opcode Pre-Shifting: %d", opcode);
+    // ////("Received bus: %d", m_reg);
+    // ////("Opcode Pre-Shifting: %d", opcode);
     opcode = opcode >> OPCODE_SHIFT;
-    // DEBUG_MESSAGE("Opcode: %d", opcode);
+    // ////("Opcode: %d", opcode);
     switch(opcode) {
         case R_TYPE : {  // SUB, SLT, ADD, JR
             uint32_t funct = m_reg & FUNCT;
@@ -34,21 +34,21 @@ int InstructionDecoder::run() {
                     m_p_alu_control[ALU_ADD] = true;
                     m_p_g_control[REG_WRITE] = true;
                     m_p_g_control[REG_DST] = true;
-                    DEBUG_MESSAGE("Op: ADD");
+                    ////("Op: ADD");
                     break;
                 }
                 case F_SUB: {
                     m_p_alu_control[ALU_SUB] = true;
                     m_p_g_control[REG_WRITE] = true;
                     m_p_g_control[REG_DST] = true;
-                    DEBUG_MESSAGE("Op: SUB");
+                    ////("Op: SUB");
                     break;
                 }
                 case F_SLT: {
                     m_p_alu_control[ALU_SLT] = true;
                     m_p_g_control[REG_DST] = true;
                     m_p_g_control[REG_WRITE] = true;
-                    DEBUG_MESSAGE("Op: SLT");
+                    ////("Op: SLT");
                     break;
                 }
                 // case F_JR: {
@@ -65,7 +65,7 @@ int InstructionDecoder::run() {
             m_p_g_control[MEM_READ] = true;
             m_p_g_control[REG_WRITE] = true;
             m_p_g_control[MEM_TO_REG] = true;
-            DEBUG_MESSAGE("Op: LW");
+            ////("Op: LW");
             break;
         }
         case LB: {
@@ -74,14 +74,14 @@ int InstructionDecoder::run() {
             m_p_g_control[REG_WRITE] = true;
             m_p_g_control[MEM_TO_REG] = true;
             m_p_g_control[BYTE_ACCESS] = true;
-            DEBUG_MESSAGE("Op: LB");
+            ////("Op: LB");
             break;
         }
         case SW: {
             m_p_g_control[ALU_SRC] = true;
             m_p_g_control[MEM_WRITE] = true;
             m_p_g_control[REG_DST] = true;
-            DEBUG_MESSAGE("Op: SW");
+            ////("Op: SW");
             break;
         }
         case SB: {
@@ -89,14 +89,14 @@ int InstructionDecoder::run() {
             m_p_g_control[MEM_WRITE] = true;
             m_p_g_control[BYTE_ACCESS] = true;
             m_p_g_control[REG_DST] = true;
-            DEBUG_MESSAGE("Op: SB");
+            ////("Op: SB");
             break;
         }
         case ADDI: {
             m_p_g_control[ALU_SRC] = true;
             // m_p_g_control[REG_DST] = true;
             m_p_g_control[REG_WRITE] = true;
-            DEBUG_MESSAGE("Op: ADDI");
+            ////("Op: ADDI");
             break;
         }
         case BEQ: {
@@ -105,24 +105,24 @@ int InstructionDecoder::run() {
 
             m_p_g_control[ALU_OP] = true;
             m_p_alu_control[ALU_SUB] = true;
-            DEBUG_MESSAGE("Op: BEQ");
+            ////("Op: BEQ");
             break;
         }
         case J: {
             m_p_g_control[JUMP_UNC] = true;
-            DEBUG_MESSAGE("Op: J");
+            ////("Op: J");
             break;
         }
         case JR: {
             m_p_g_control[JUMP_REG] = true;
-            DEBUG_MESSAGE("Op: JR");
+            ////("Op: JR");
             break;
         }
         case JAL: {
             m_p_g_control[JUMP_UNC] = true;
             m_p_g_control[JUMP_LINK] = true;
             m_p_g_control[REG_WRITE] = true;
-            DEBUG_MESSAGE("Op: JAL");
+            ////("Op: JAL");
             break;
         }
         case TERMINATE: {

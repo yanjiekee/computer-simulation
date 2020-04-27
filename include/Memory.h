@@ -9,8 +9,6 @@
 
 #define BYTE_LENGTH 8                   // Based on the type used in m_register array, e.g. uint8_t
 #define WORD_LENGTH (4 * BYTE_LENGTH)   // 1 word = 32 bits, size of bus
-// #define NO_OF_WORDS (UINT32_MAX + 1)    // INT32_MAX + 1 = 2^32
-// #define NO_OF_BYTES (NO_OF_WORDS * BYTE_LENGTH)
 
 // Memory space allocation in bytes (indexing, start at 0)
 #define MEMORY_RESERVED_LOWERLIMIT  0x00000000
@@ -37,7 +35,7 @@ public:
     void run();
     void change_p_bus_in(uint32_t* p_bus_inA);
 
-    void programUpload(std::fstream& text_file, const char* file_location);
+    void programUpload(const char* file_location);
 
 private:
     uint8_t m_reg[MEMORY_STACK_UPPERLIMIT + 1];    // Byte addressed

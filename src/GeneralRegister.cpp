@@ -15,15 +15,15 @@ GeneralRegister::GeneralRegister(uint32_t* p_bus_inA, uint32_t* p_bus_inB, uint3
 
 void GeneralRegister::run() {
     m_read_regA = ((*m_p_bus_inA & REG_SOURCE) >> REG_SOURCE_SHIFT);
-    DEBUG_MESSAGE("Read Addr 1: %d", m_read_regA);
+    ////("Read Addr 1: %d", m_read_regA);
     m_read_regB = ((*m_p_bus_inA & REG_TARGET) >> REG_TARGET_SHIFT);
-    DEBUG_MESSAGE("Read Addr 2: %d", m_read_regB);
+    ////("Read Addr 2: %d", m_read_regB);
     if(m_p_g_control[REG_DST]) {
         m_write_reg = ((*m_p_bus_inA & REG_DESTINATION) >> REG_DESTINATION_SHIFT);
-        DEBUG_MESSAGE("Write Addr: %d .. REG_DST = 1", m_write_reg);
+        ////("Write Addr: %d .. REG_DST = 1", m_write_reg);
     } else {
         m_write_reg = ((*m_p_bus_inA & REG_TARGET) >> REG_TARGET_SHIFT);
-        DEBUG_MESSAGE("Write Addr: %d .. REG_DST = 0", m_write_reg);
+        ////("Write Addr: %d .. REG_DST = 0", m_write_reg);
     }
     m_write_data = *m_p_bus_inB;
 
@@ -32,7 +32,7 @@ void GeneralRegister::run() {
 
     if(m_p_g_control[JUMP_LINK]) {
         m_reg[GREG_RA] = *m_p_bus_jal;
-        DEBUG_MESSAGE("New $ra: %x", m_reg[GREG_RA]);
+        ////("New $ra: %x", m_reg[GREG_RA]);
     }
     else if(m_p_g_control[REG_WRITE]) {
         if (m_write_reg == GREG_ZERO) {
@@ -41,12 +41,12 @@ void GeneralRegister::run() {
             // printf("$ra = x'%x\n", m_reg[GREG_RA]);
         }
         m_reg[m_write_reg] = m_write_data;
-        DEBUG_MESSAGE("Written Data: %x, Addr: %d", m_reg[m_write_reg], m_write_reg);
+        ////("Written Data: %x, Addr: %d", m_reg[m_write_reg], m_write_reg);
     }
     *m_p_bus_outA = m_read_dataA;
-    DEBUG_MESSAGE("Read Data 1: %d", m_read_dataA);
+    ////("Read Data 1: %d", m_read_dataA);
     *m_p_bus_outB = m_read_dataB;
-    DEBUG_MESSAGE("Read Data 2: %d", m_read_dataB);
+    ////("Read Data 2: %d", m_read_dataB);
 }
 
 void GeneralRegister::change_p_bus_inB(uint32_t* p_bus_inB) {

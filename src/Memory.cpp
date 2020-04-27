@@ -22,7 +22,7 @@ void Memory::run() {
 
     if (m_p_g_control[PC_READ]){
         *m_p_bus_outB = read(*m_p_bus_inA, WORD_LENGTH);
-        DEBUG_MESSAGE("Instruction Machine Code: x'%x", *m_p_bus_outB);
+        // DEBUG_MESSAGE("Instruction Machine Code: x'%x", *m_p_bus_outB);
     }
     else if (m_p_g_control[MEM_WRITE]) {
         write(*m_p_bus_inB, *m_p_bus_inA, dataLength);
@@ -46,7 +46,7 @@ uint32_t Memory::read(uint32_t address, int dataLength) {
             std::cerr << "ERROR: Address not within the range of memory" << std::endl;
             return 0;
         }
-        DEBUG_MESSAGE("READ(BYTE): Address: x'%x, Data: %x", address, m_reg[address]);
+        // DEBUG_MESSAGE("READ(BYTE): Address: x'%x, Data: %x", address, m_reg[address]);
         return m_reg[address];
     }
     else if (dataLength == WORD_LENGTH) {
@@ -58,7 +58,7 @@ uint32_t Memory::read(uint32_t address, int dataLength) {
         for (int i = 0; i < 4; i++) {
             word = word << 8;
             word += m_reg[address + i];
-            DEBUG_MESSAGE("READ(WORD): Address: x'%x, Data: %d", (address + i), m_reg[address + i]);
+            // DEBUG_MESSAGE("READ(WORD): Address: x'%x, Data: %d", (address + i), m_reg[address + i]);
             // DEBUG_MESSAGE("READ: Current word: %x", word);
         }
         return word;
@@ -75,7 +75,7 @@ void Memory::write(uint32_t data, uint32_t address, int dataLength) {
             return;
         }
         m_reg[address] = (uint8_t)data; // Does it works? Tested and working
-        DEBUG_MESSAGE("WRITE(BYTE): Address: x'%x, Data: %d", address, m_reg[address]);
+        // DEBUG_MESSAGE("WRITE(BYTE): Address: x'%x, Data: %d", address, m_reg[address]);
     }
     else if (dataLength == WORD_LENGTH) {
         if (address > MEMORY_STACK_UPPERLIMIT - 3) {
@@ -83,8 +83,8 @@ void Memory::write(uint32_t data, uint32_t address, int dataLength) {
             return;
         }
         if (address < MEMORY_LOG_UPPERLIMIT - 2 && address > MEMORY_LOG_LOWERLIMIT - 1) {
-            printf("LOG: Data: d'%d, addr: x'%x\n", data, address);
-            DEBUG_MESSAGE("LOG: Data: d'%d, addr: x'%x\n", data, address);
+            // fprintf(g_p_logfile, "LOG: Data: d'%d, addr: x'%x\n", data, address);
+            DEBUG_MESSAGE("LOG: Data: d'%d, addr: x'%x", data, address);
         }
         // Use union to cut down word into bytes, because they are in the same memory space
         WordToBytes wordToBytes;
@@ -95,14 +95,15 @@ void Memory::write(uint32_t data, uint32_t address, int dataLength) {
             m_reg[address + i] = wordToBytes.byte[3 - i];
             // Index to [4 - i] to be consistent with loading operation
             // The MSB is stored in the byte closest to pointer
-            DEBUG_MESSAGE("WRITE(WORD): Address: x'%x, Data: %x", (address + i), wordToBytes.byte[3 - i]);
+            // DEBUG_MESSAGE("WRITE(WORD): Address: x'%x, Data: %x", (address + i), wordToBytes.byte[3 - i]);
         }
     } else {
         std::cerr << "ERROR: Access memory only by BYTE or WORD\n" << std::endl;
     }
 }
 
-void Memory::programUpload(std::fstream& text_file, const char* file_location) {
+void Memory::programUpload(const char* file_location) {
+    std::fstream text_file;
     text_file.open(file_location);
 
     uint32_t addr = MEMORY_TEXT_LOWERLIMIT;

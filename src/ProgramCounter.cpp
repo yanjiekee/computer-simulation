@@ -18,7 +18,7 @@ void ProgramCounter::run() {
     write(*m_p_bus_in);
     // "Wait for the clock"
     *m_p_bus_out = read();
-    DEBUG_MESSAGE("PC: %d", ((m_reg - MEMORY_TEXT_LOWERLIMIT) / 4) + 1);
+    ////("PC: %d", ((m_reg - MEMORY_TEXT_LOWERLIMIT) / 4) + 1);
     // printf("PC: %d\n", ((m_reg - MEMORY_TEXT_LOWERLIMIT) / 4) + 1);
     return;
 }
@@ -35,8 +35,8 @@ uint32_t ProgramCounter::read() {
 void ProgramCounter::write(uint32_t newAddress) {
     if (m_p_g_control[JUMP_UNC]) {
         m_reg = (*m_p_bus_in & J_ADDR);
-        DEBUG_MESSAGE("Bus in value: x'%x", *m_p_bus_in);
-        DEBUG_MESSAGE("Reg value: x'%x", m_reg);
+        ////("Bus in value: x'%x", *m_p_bus_in);
+        ////("Reg value: x'%x", m_reg);
     } else {
         m_reg = *m_p_bus_in;
     }

@@ -17,14 +17,14 @@ void ALU_CondBranch::run() {
     if (m_reg_inputB >> (16 - 1)) {
         m_reg_inputB = m_reg_inputB | (~I_CONST_ADDR);
     }
-    DEBUG_MESSAGE("Input A: %d", m_reg_inputA);
-    DEBUG_MESSAGE("Input B: %d", m_reg_inputB);
+    // DEBUG_MESSAGE("Input A: %d", m_reg_inputA);
+    // DEBUG_MESSAGE("Input B: %d", m_reg_inputB);
 
     add();
-    DEBUG_MESSAGE("Operation (Default): Addition");
+    // DEBUG_MESSAGE("Operation (Default): Addition");
 
     *m_p_bus_out = m_reg_output;
-    DEBUG_MESSAGE("Output: %d", m_reg_output);
+    // DEBUG_MESSAGE("Output: %d", m_reg_output);
     return;
 }
 
