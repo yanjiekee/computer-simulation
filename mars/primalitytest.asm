@@ -87,7 +87,7 @@ C2:
 	sub $t2 $fp $t0
 	lb $t3 0($t2)
 	beq $t3 $zero exitC2
-	addi $sp $sp -4
+	addi $sp $sp -4	# From here to bottom is printing result onto the screen, change to store into memory instead
 	sw $a0 0($sp)
 	li $v0 1
 	add $a0 $t0 $zero
